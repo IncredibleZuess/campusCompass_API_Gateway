@@ -1,0 +1,143 @@
+http:
+    port: 8080
+#where localhost is used, the hosting server will replace it, as well as for any ports used.
+admin:
+    port: 9876
+    host: localhost
+   
+apiEndpoints:
+    adminRoutes:
+        host: localhost
+        paths: "/routes/adminRoute.ts"
+        
+    buildingRoutes:
+        host: localhost
+        paths: "/routes/buildingRoute.ts"
+       
+    lecturerRoutes:
+        host: localhost
+        paths: "/routes/lecturerRoute.ts"
+        
+    locationRoutes:
+        host: localhost
+        paths: "/routes/locationRoute.ts"
+        
+    officeRoutes:
+        host: localhost
+        paths: "/routes/officeRoute.ts"
+        
+serviceEndpoints:
+    adminRoute:
+        url: "http://localhost:3001"
+    
+    buildingRoute:
+        url: "http://localhost:3002"
+    
+    lecturerRoute:
+        url: "http://localhost:3003"
+    
+    locationRoute:
+        url: "http://localhost:3004"
+        
+    officeRoute:
+        url: "http://localhost:3005"
+
+#proxy simply routes trafic from public-facing gatewat to the corresponding bacend service port.
+policies:
+    - proxy
+    - jwt
+    - rate-limit
+pipelines:
+    default:
+        apiEndpoints:
+            - api
+        policies:
+           
+            - rate-limit:
+                - action:
+                    max: 10
+                    windowMS: 120000
+                    rateLimitBy: ""
+            - proxy:
+                - action:
+                    serviceEndpoint:  
+                    changeOrigin: true
+                    
+                    
+    adminRoutes:
+        apiEndpoints:
+            - adminRoutes
+        policies:
+             - jwt: 
+                action:
+                    secretOrPublicKey: "${JWT_SECRET}" #this is set in env or even gateway config
+                    checkJwt: true
+                    #since only admin can write or delete or update, this is necessary
+                    credentialsRequired: true
+            - rate-limit:
+                - action:
+                    max: 10
+                    windowMS: 120000
+                    rateLimitBy: ""
+            - proxy:
+                - action:
+                    serviceEndpoint:  adminRoute
+                    changeOrigin: true
+                    
+    buildingRoutes:
+        apiEndpoints:
+            - buildingRoutes
+        policies:
+            - rate-limit:
+                - action:
+                    max: 10
+                    windowMS: 120000
+                    rateLimitBy: ""
+            - proxy:
+                - action:
+                    serviceEndpoint:  buildingRoute
+                    changeOrigin: true
+                    
+    lecturerRoutes:
+        apiEndpoints:
+            - lecturerRoutes
+        policies:
+            - rate-limit:
+                - action:
+                    max: 10
+                    windowMS: 120000
+                    rateLimitBy: ""
+            - proxy:
+                - action:
+                    serviceEndpoint:  lecturerRoute
+                    changeOrigin: true
+                   
+    locationRoutes:
+        apiEndpoints:
+            - locationRoutes
+        policies:
+            - rate-limit:
+                - action:
+                    max: 10
+                    windowMS: 120000
+                    rateLimitBy: ""
+            - proxy:
+                - action:
+                    serviceEndpoint:  locationRoute
+                    changeOrigin: true
+                    
+    officeRoutes:
+        apiEndpoints:
+            - officeRoutes
+        policies:
+            - rate-limit:
+                - action:
+                    max: 10
+                    windowMS: 120000
+                    rateLimitBy: ""
+            - proxy:
+                - action:
+                    serviceEndpoint:  officeRoute
+                    changeOrigin: true
+    
+    

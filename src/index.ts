@@ -8,7 +8,12 @@ const port = 4000;
 
 //Middlewares
 
-app.use(cors())
+app.use(cors({
+  origin: ["http://192.168.1.4:5173", 'http://localhost:5173'],
+  credentials: true
+}
+  
+))
 app.use(morgan("combined"))
 app.disable("x-powered-by")
 

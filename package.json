@@ -1,0 +1,35 @@
+{
+  "name": "campuscompass_api_gateway",
+  "version": "1.0.0",
+  "description": "Gateway for application",
+  "homepage": "https://github.com/campus-compass-007/campusCompass_API_Gateway#readme",
+  "bugs": {
+    "url": "https://github.com/campus-compass-007/campusCompass_API_Gateway/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/campus-compass-007/campusCompass_API_Gateway.git"
+  },
+  "license": "MIT",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "http-proxy-middleware": "^3.0.5",
+    "morgan": "^1.10.1"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/morgan": "^1.9.10",
+    "@types/node": "^24.5.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.9.2"
+  }
+}
